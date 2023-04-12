@@ -18,8 +18,8 @@ public class QuarkusResource {
 
     private final StatisticsRepository repository;
 
-    public QuarkusResource(StatisticsRepository statisticsRespository) {
-        this.repository = statisticsRespository;
+    public QuarkusResource(StatisticsRepository statisticsRepository) {
+        this.repository = statisticsRepository;
     }
 
     @GET
@@ -46,7 +46,7 @@ public class QuarkusResource {
             if (iterations % 20000 == 0) {
                 try {
                     Thread.sleep(20);
-                } catch (InterruptedException ie) {
+                } catch (InterruptedException ignored) {
                 }
             }
             iterations--;
@@ -79,7 +79,7 @@ public class QuarkusResource {
         if (bites == null) {
             bites = 1;
         }
-        HashMap hunger = new HashMap<>();
+        HashMap<Integer, byte[]> hunger = new HashMap<>();
         for (int i = 0; i < bites * 1024 * 1024; i += 8192) {
             byte[] bytes = new byte[8192];
             hunger.put(i, bytes);
@@ -87,6 +87,8 @@ public class QuarkusResource {
                 bytes[j] = '0';
             }
         }
+
+        LOGGER.log(INFO, "Quarkus: memory: {0} {1} with desc {2}, size of hunger HashMap: ", hunger.size());
 
         if (db) {
             Statistics statistics = new Statistics();
@@ -111,7 +113,6 @@ public class QuarkusResource {
         LOGGER.log(INFO, "Quarkus: retrieving statistics");
         return Statistics.findAll().list();
     }
-
 
 
 }
