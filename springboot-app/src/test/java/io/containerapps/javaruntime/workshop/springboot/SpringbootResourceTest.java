@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 })
 class SpringbootResourceTest {
 
-    private static String basePath = "http://localhost:8803/springboot";
+    private static final String basePath = "http://localhost:8803/springboot";
 
     @Autowired
     private TestRestTemplate restTemplate;

@@ -51,7 +51,7 @@ public class SpringbootResource {
             if (iterations % 20000 == 0) {
                 try {
                     Thread.sleep(20);
-                } catch (InterruptedException ie) {
+                } catch (InterruptedException ignored) {
                 }
             }
             iterations--;
@@ -83,7 +83,7 @@ public class SpringbootResource {
         if (bites == null) {
             bites = 1;
         }
-        HashMap hunger = new HashMap<>();
+        HashMap<Object, Object> hunger = new HashMap<>();
         for (int i = 0; i < bites * 1024 * 1024; i += 8192) {
             byte[] bytes = new byte[8192];
             hunger.put(i, bytes);
@@ -91,6 +91,8 @@ public class SpringbootResource {
                 bytes[j] = '0';
             }
         }
+
+        LOGGER.log(INFO, "Springboot: memory: {0} {1} with desc {2}, size of hunger HashMap: ", hunger.size());
 
         if (db) {
             Statistics statistics = new Statistics();
@@ -111,7 +113,7 @@ public class SpringbootResource {
     @GetMapping(path = "/stats", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Statistics> stats() {
         LOGGER.log(INFO, "Spring Boot: retrieving statistics");
-        List<Statistics> result = new ArrayList<Statistics>();
+        List<Statistics> result = new ArrayList<>();
         for (Statistics stats : repository.findAll()) {
             result.add(stats);
         }
